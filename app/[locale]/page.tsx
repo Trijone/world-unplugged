@@ -25,13 +25,14 @@ export default async function HomePage({params}: Props) {
     <main className="min-h-screen bg-[#11100d] text-white">
       {/* HERO */}
       <section className="relative min-h-screen overflow-hidden">
-        <Image
-          src="/images/hero-final.png"
-          alt="World Unplugged acoustic busking festival"
-          fill
-          priority
-          className="object-cover object-center"
-        />
+      <Image
+  src="/images/hero-final.png"
+  alt="World Unplugged acoustic busking festival"
+  fill
+  priority
+  sizes="100vw"
+  className="object-cover object-[58%_center] md:object-center"
+/>
 
         <div className="absolute inset-0 bg-gradient-to-r from-black/85 via-black/40 to-black/5" />
         <div className="absolute inset-0 bg-gradient-to-t from-black/55 via-transparent to-black/15" />
