@@ -1,65 +1,132 @@
-import Image from "next/image";
+import {
+  getTranslations,
+  setRequestLocale
+} from "next-intl/server";
 
-export default function Home() {
+type Props = {
+  params: Promise<{
+    locale: string;
+  }>;
+};
+
+export default async function HomePage({params}: Props) {
+  const {locale} = await params;
+
+  setRequestLocale(locale);
+
+  const home = await getTranslations({
+    locale,
+    namespace: "Home"
+  });
+
+  const liveCode = await getTranslations({
+    locale,
+    namespace: "LiveCode"
+  });
+
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
+    <main className="min-h-screen bg-[#11100d] text-white">
+      <section className="relative min-h-screen overflow-hidden">
         <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
+          src="/images/hero-final.png"
+          alt="World Unplugged acoustic busking festival"
+          fill
           priority
+          className="object-cover object-center"
         />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
+
+        <div className="absolute inset-0 bg-gradient-to-r from-black/85 via-black/40 to-black/5" />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/55 via-transparent to-black/15" />
+
+        <Image
+          src="/images/logo.png"
+          alt="World Unplugged logo"
+          width={190}
+          height={190}
+          className="absolute bottom-6 right-6 z-20 h-auto w-24 drop-shadow-xl md:bottom-8 md:right-10 md:w-32 lg:w-36"
+        />
+
+        <div className="relative z-10 flex min-h-screen flex-col px-6 py-6 md:px-12 md:py-8 lg:px-16">
+          <header className="flex justify-end">
+            <nav className="flex items-center gap-4 text-sm font-bold tracking-wide">
+              <a href="/en" className="border-b-2 border-white pb-1">
+                EN
+              </a>
+
+              <a
+                href="/nl"
+                className="pb-1 text-white/60 transition hover:text-white"
+              >
+                NL
+              </a>
+            </nav>
+          </header>
+
+          <div className="mt-auto max-w-2xl pb-10 md:pb-14">
+            <p className="mb-5 text-[11px] font-bold uppercase tracking-[0.34em] text-white/85 md:text-xs">
+              {home("festivalType")}
+            </p>
+
+            <h1 className="max-w-2xl text-4xl font-black uppercase leading-[0.94] tracking-[-0.035em] sm:text-5xl md:text-6xl lg:text-7xl">
+              {home("headlineLine1")}
+              <br />
+              {home("headlineLine2")}
+            </h1>
+
+            <p className="mt-6 max-w-lg text-lg leading-relaxed text-white/90 md:text-xl">
+              {home("description")}
+            </p>
+
             <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
+              href="#live-code"
+              className="mt-6 flex w-fit items-center gap-3 transition hover:opacity-80"
             >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
+              <span className="h-px w-10 bg-[#d59b43]" />
+
+              <span className="text-sm font-black uppercase tracking-[0.32em] text-[#e8b65f] md:text-base">
+                {home("liveCode")}
+              </span>
+            </a>
+
+            <div className="mt-8 flex flex-wrap gap-3">
+              <a
+                href="#apply"
+                className="rounded-full bg-white px-6 py-3 text-sm font-bold text-black transition hover:bg-[#e8b65f]"
+              >
+                {home("apply")}
+              </a>
+
+              <a
+                href="#live-code"
+                className="rounded-full border border-white/70 bg-black/15 px-6 py-3 text-sm font-bold text-white backdrop-blur-sm transition hover:bg-white hover:text-black"
+              >
+                {home("discover")}
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section
+        id="live-code"
+        className="bg-[#f2eadf] px-6 py-20 text-[#17130f] md:px-12 md:py-28 lg:px-16"
+      >
+        <div className="mx-auto max-w-4xl">
+          <p className="mb-4 text-sm font-bold uppercase tracking-[0.3em] text-[#9a6b2f]">
+            {liveCode("label")}
           </p>
+
+          <h2 className="text-4xl font-black uppercase leading-tight md:text-6xl">
+            {liveCode("title")}
+          </h2>
+
+          <div className="mt-8 max-w-3xl space-y-5 text-lg leading-relaxed md:text-xl">
+            <p>{liveCode("paragraph1")}</p>
+            <p>{liveCode("paragraph2")}</p>
+            <p>{liveCode("paragraph3")}</p>
+          </div>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
-    </div>
+      </section>
+    </main>
   );
 }
